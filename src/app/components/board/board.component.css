@@ -1,0 +1,7 @@
+.board-container {
+  display: grid;
+  row-gap: 1px;
+  column-gap: 1px;
+  cursor: crosshair;
+  justify-content: center;
+}
