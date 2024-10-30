@@ -1,11 +1,14 @@
-<div class="board-container" [ngStyle]="boardDimensionStyle">
+<div class="board-container">
   <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
-      <div [ngStyle]="cellStyle">
-        <ng-container  *ngIf="debugMode">
+      <div
+        class="cell"
+        [ngClass]="{'debug-mode': debugMode}"
+      >
+        <ng-container>
           {{ cellStyle['grid-row'] - 1 }},{{ cellStyle['grid-column'] - 1 }}
         </ng-container>
       </div>
-    </ng-container>
+    </ng-container> 
   </ng-container>
 </div>
