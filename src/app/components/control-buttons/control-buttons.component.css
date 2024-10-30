@@ -1,0 +1,13 @@
+.controls-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+button,
+form {
+  width: 15%;
+}
+
+select {
+  width: 100%;
+}
