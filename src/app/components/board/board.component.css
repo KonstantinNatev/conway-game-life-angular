@@ -4,4 +4,15 @@
   column-gap: 1px;
   cursor: crosshair;
   justify-content: center;
+  grid-template-columns: repeat(50, 25px);
+  grid-template-rows: repeat(30, 25px);
+}
+
+.cell {
+  border-style: groove;
+}
+
+.cell.debug-mode {
+  font-size: 8pt;
+  color: #000000;
 }
