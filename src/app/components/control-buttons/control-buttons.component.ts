@@ -14,9 +14,10 @@ import { CommonModule } from '@angular/common';
 
 export class ControlButtonsComponent implements OnInit {
 
-  @Input() board: BoardComponent | undefined;
+  @Input()
+  board!: BoardComponent;
 
-  public controlStates: ControlStates | undefined;
+  public controlStates!: ControlStates;
   public initialSeeds: Seed[];
 
 //   private loopIntervalId: number;
@@ -33,10 +34,6 @@ export class ControlButtonsComponent implements OnInit {
 
   ngOnInit() {
     this.controlStates = new ControlStates()
-      .disablePlay()
-      .disableNext()
-      .disableStop()
-      .disableClear();
   }
 
   onClickPlay() {
@@ -57,6 +54,6 @@ export class ControlButtonsComponent implements OnInit {
 
   onSelectChange($event: any) {
     this.controlStates = new ControlStates().disableStop();
-    // this.board.populateSeed(<Seed>$event.target.value);
+    this.board.populateSeed(<Seed>$event.target.value);
   }
 }
