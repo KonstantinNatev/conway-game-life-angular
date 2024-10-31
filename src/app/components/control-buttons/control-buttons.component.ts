@@ -20,8 +20,6 @@ export class ControlButtonsComponent implements OnInit {
   public controlStates!: ControlStates;
   public initialSeeds: Seed[];
 
-//   private loopIntervalId: number;
-
   constructor() {
     this.initialSeeds = [
       Seed.Blinker,

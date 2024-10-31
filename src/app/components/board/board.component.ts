@@ -36,14 +36,21 @@ export class BoardComponent {
         this.tracking.initBoard(this.height, this.width);
     }
 
+    reset() {
+        this.cellsStyle.forEach((column) => {
+            column.forEach((cell) => {
+                cell.backgroundColor = "";
+            });
+        });
+    }
+
     populateSeed(seed: Seed) {
-        console.log("here 1");
-        
+        this.reset();
+
         let whichSeed = [];
 
         switch (seed) {
             case Seed.Blinker:
-                console.log("here 2");
                 whichSeed = InitSeed.blinker();
             break;
 
@@ -63,7 +70,6 @@ export class BoardComponent {
                 whichSeed = InitSeed.lwss();
             break;
         }
-        console.log("whichSeed", whichSeed);
         
         whichSeed.forEach((cell: CellInfo) => {
             this.paintAt(cell);
