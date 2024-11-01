@@ -20,6 +20,8 @@ export class ControlButtonsComponent implements OnInit {
   public controlStates!: ControlStates;
   public initialSeeds: Seed[];
 
+  private loopIntervalId!: any;
+
   constructor() {
     this.initialSeeds = [
       Seed.Blinker,
@@ -35,6 +37,19 @@ export class ControlButtonsComponent implements OnInit {
   }
 
   onClickPlay() {
+    this.board.update();
+    let cs = new ControlStates().disablePlay().disableNext();
+    this.controlStates = cs;
+
+    this.loopIntervalId = window.setInterval.call(this,
+      () => {
+        cs = new ControlStates().disablePlay().disableNext();
+
+          this.board.update();
+          cs.disableSeed();
+
+        this.controlStates = cs;
+      }, 600);
   }
 
   onClickNext() {

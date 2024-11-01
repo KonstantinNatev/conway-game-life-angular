@@ -4,6 +4,7 @@ import { TrackingService } from "../../services/tracking.service";
 import { ControlStates } from "../control-buttons/control-buttons-state.class";
 import { InitSeed, Seed } from "../../utils/seed";
 import { CellInfo } from "../../utils/cell-info.interface";
+import { LifeRulesService } from "../../services/lifeRules.service";
 
 @Component ({
     selector: 'app-board',
@@ -11,7 +12,7 @@ import { CellInfo } from "../../utils/cell-info.interface";
     imports: [CommonModule],
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.css'],
-    providers: [TrackingService]
+    providers: [TrackingService, LifeRulesService]
 })
 
 export class BoardComponent {
@@ -25,7 +26,7 @@ export class BoardComponent {
     private height: number;
     private cellColor: string;
     
-    constructor(private tracking: TrackingService) {
+    constructor(private tracking: TrackingService, private lifeRules: LifeRulesService) {
         this.width = 40;
         this.height = 20;
         this.cellColor = '#fbf165';
@@ -77,8 +78,25 @@ export class BoardComponent {
         });
    }
 
+   update() {
+        this.lifeRules.applyRules();
+
+        this.lifeRules.newGeneration.forEach((cell: CellInfo) => {
+            this.tracking.mark(cell);
+            if (cell.alive) {
+                this.paintAt(cell);
+            } else {
+                this.unPaintAt(cell);
+            }
+        });
+   }
+
     private paintAt(c: CellInfo) {
       this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
+    }
+
+    private unPaintAt(cell: CellInfo) {
+        this.cellsStyle[cell.row][cell.col].backgroundColor = '';
     }
 
     private initializeBoard(): void {
