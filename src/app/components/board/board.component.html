@@ -3,6 +3,7 @@
     <ng-container *ngFor="let cellStyle of row">
       <div
         class="cell"
+        [ngStyle]="cellStyle"
         [ngClass]="{'debug-mode': debugMode}"
       >
       </div>
