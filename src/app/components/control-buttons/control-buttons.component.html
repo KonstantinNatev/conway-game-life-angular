@@ -1,11 +1,29 @@
 <div class="controls-container">
-  <button [disabled]="controlStates.disabledPlay" (click)="onClickPlay()">Play</button>
-  <button [disabled]="controlStates.disabledStop" (click)="onClickStop()">Stop</button>
-  <button [disabled]="controlStates.disabledClear" (click)="onClickClear()">Clear</button>
+  <button
+    [disabled]="controlStates.disabledPlay"
+    (click)="onClickPlay()"
+  >
+    Play
+  </button>
+  <button
+    [disabled]="controlStates.disabledStop"
+    (click)="onClickStop()"
+  >
+    Stop
+  </button>
+  <button
+    [disabled]="controlStates.disabledClear"
+    (click)="onClickClear()"
+  >
+    Clear
+  </button>
   <form class="seed-form">
-    <select [disabled]="controlStates.disabledSeed" (change)="onSelectChange($event)">
-      <option [value]="" selected>Select seed</option>
-      <option *ngFor="let seed of initialSeeds" [value]="seed">{{seed}}</option>
+    <select
+      [disabled]="controlStates.disabledSeed"
+      (change)="onSelectChange($event)"
+    >
+      <option value="" selected>Select seed</option>
+      <option *ngFor="let seed of initialSeeds" [value]="seed">{{ seed }}</option>
     </select>
   </form>
 </div>

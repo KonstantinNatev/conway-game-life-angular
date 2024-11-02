@@ -1,0 +1,12 @@
+.root {
+    background-color: #333;
+}
+
+.board-container {
+  margin-bottom: 40px;
+  padding: 10px;
+}
+
+.controls-container {
+  padding: 10px;
+}

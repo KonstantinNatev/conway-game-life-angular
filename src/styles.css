@@ -1,7 +1,10 @@
 html,
 body  {
-    background-color: #90cde3b5;
     margin: 0;
     height: 100%;
-    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
 }
