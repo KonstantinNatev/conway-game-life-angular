@@ -41,14 +41,13 @@ export class ControlButtonsComponent implements OnInit {
 
   onClickPlay() {
     this.board.update();
-    let cs = new ControlStates().disablePlay()
+    let cs = new ControlStates().disablePlay().disableSeed();
     this.controlStates = cs;
 
     this.loopIntervalId = window.setInterval.call(this,
       () => {
-        cs = new ControlStates().disablePlay();
+        cs = new ControlStates().disablePlay().disableSeed();
           this.board.update();
-          cs.disableSeed();
 
         this.controlStates = cs;
       }, 600);

@@ -1,13 +1,58 @@
 .controls-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 8px;
 }
 
-button,
-form {
+button {
+  width: 15%;
+  padding: 8px 16px;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover:not([disabled]) {
+  background-color: #357ABD;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background-color: #aaaaaadb;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.seed-form {
   width: 15%;
 }
 
 select {
   width: 100%;
+  padding: 8px;
+  background-color: #444;
+  color: #fff;
+  border: 1px solid #666;
+  border-radius: 4px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+select:disabled {
+  background-color: #aaaaaadb;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+select:hover:not([disabled]) {
+  border-color: #888;
+  transform: scale(1.05);
 }

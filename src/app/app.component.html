@@ -1,5 +1,9 @@
 <div class="root">
-  <app-board (controlStates)="controls.onControlStates($event)" #board></app-board>
-  <app-controls [board]="board" #controls></app-controls>
-  <router-outlet></router-outlet>
+    <div class="board-container">
+      <app-board (controlStates)="controls.onControlStates($event)" #board></app-board>
+    </div>
+    <div class="controls-container">
+      <app-controls [board]="board" #controls></app-controls>
+    </div>
+    <router-outlet></router-outlet>
 </div>
