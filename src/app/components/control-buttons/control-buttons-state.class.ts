@@ -1,14 +1,12 @@
 export class ControlStates {
 
   disabledPlay: boolean;
-  disabledNext: boolean;
   disabledStop: boolean;
   disabledClear: boolean;
   disabledSeed: boolean;
 
   constructor() {
     this.disabledPlay = false;
-    this.disabledNext = false;
     this.disabledStop = false;
     this.disabledClear = false;
     this.disabledSeed = false;
@@ -16,11 +14,6 @@ export class ControlStates {
 
   disablePlay() {
     this.disabledPlay = true;
-    return this;
-  }
-
-  disableNext() {
-    this.disabledNext = true;
     return this;
   }
 

@@ -21,6 +21,7 @@ export class BoardComponent {
 
     public cellsStyle: any[][] = []; 
     public debugMode: boolean = true;
+    public whichSeed: CellInfo[] = [];
 
     private width: number;
     private height: number;
@@ -43,36 +44,37 @@ export class BoardComponent {
                 cell.backgroundColor = "";
             });
         });
+
+        this.tracking.initBoard(this.height, this.width);
+        // this.lifeRules.newGeneration = [];
     }
 
     populateSeed(seed: Seed) {
         this.reset();
 
-        let whichSeed = [];
-
         switch (seed) {
             case Seed.Blinker:
-                whichSeed = InitSeed.blinker();
+                this.whichSeed = InitSeed.blinker();
             break;
 
             case Seed.Pulsar:
-                whichSeed = InitSeed.pulsar();
+                this.whichSeed = InitSeed.pulsar();
             break;
 
             case Seed.Pentadecathlon:
-                whichSeed = InitSeed.pentadecathlon();
+                this.whichSeed = InitSeed.pentadecathlon();
             break;
 
             case Seed.Glider:
-                whichSeed = InitSeed.glider();
+                this.whichSeed = InitSeed.glider();
             break;
 
             case Seed.LWSS:
-                whichSeed = InitSeed.lwss();
+                this.whichSeed = InitSeed.lwss();
             break;
         }
         
-        whichSeed.forEach((cell: CellInfo) => {
+        this.whichSeed.forEach((cell: CellInfo) => {
             this.paintAt(cell);
             this.tracking.mark(cell);
         });
