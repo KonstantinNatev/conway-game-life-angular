@@ -50,8 +50,6 @@ export class BoardComponent {
     }
 
     populateSeed(seed: Seed) {
-        console.log("seed", seed);
-        
         this.reset();
 
         switch (seed) {

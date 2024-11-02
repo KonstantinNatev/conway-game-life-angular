@@ -34,16 +34,19 @@ export class ControlButtonsComponent implements OnInit {
 
   ngOnInit() {
     this.controlStates = new ControlStates()
+    .disablePlay()
+    .disableClear()
+    .disableStop();
   }
 
   onClickPlay() {
     this.board.update();
-    let cs = new ControlStates().disablePlay().disableNext();
+    let cs = new ControlStates().disablePlay()
     this.controlStates = cs;
 
     this.loopIntervalId = window.setInterval.call(this,
       () => {
-        cs = new ControlStates().disablePlay().disableNext();
+        cs = new ControlStates().disablePlay();
           this.board.update();
           cs.disableSeed();
 
@@ -51,13 +54,16 @@ export class ControlButtonsComponent implements OnInit {
       }, 600);
   }
 
-  onClickNext() {
-  }
-
   onClickStop() {
+    this.controlStates = new ControlStates().disableStop();
+    clearInterval(this.loopIntervalId);
   }
 
   onClickClear() {
+    this.controlStates = new ControlStates()
+    .disablePlay()
+    .disableStop()
+    .disableClear()
     clearInterval(this.loopIntervalId);
     this.board.reset();
   }

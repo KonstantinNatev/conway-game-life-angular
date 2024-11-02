@@ -28,7 +28,6 @@ export class LifeRulesService {
 
   applyRules() {
     this.newGeneration = [];
-    console.log("this.tracking.board", this.tracking.board);
     // matrix to track already checked dead cells; don't want to check again
     const checkedDeadCells = this.tracking.board!.map((someRow) => {
       // slice clones the array row and the row in tracking.board will not be modified or referenced
