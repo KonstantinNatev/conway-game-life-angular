@@ -44,7 +44,6 @@ export class ControlButtonsComponent implements OnInit {
     this.loopIntervalId = window.setInterval.call(this,
       () => {
         cs = new ControlStates().disablePlay().disableNext();
-
           this.board.update();
           cs.disableSeed();
 
@@ -59,6 +58,8 @@ export class ControlButtonsComponent implements OnInit {
   }
 
   onClickClear() {
+    clearInterval(this.loopIntervalId);
+    this.board.reset();
   }
 
   onControlStates($event: ControlStates) {
