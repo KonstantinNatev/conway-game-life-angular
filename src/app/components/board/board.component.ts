@@ -19,8 +19,7 @@ export class BoardComponent {
     // Emits ControlStates events to notify the parent of control state changes.
     @Output() controlStates = new EventEmitter<ControlStates>();
 
-    public cellsStyle: any[][] = []; 
-    public debugMode: boolean = true;
+    public cellsStyle: any[][] = [];
     public whichSeed: CellInfo[] = [];
 
     private width: number;
@@ -36,6 +35,11 @@ export class BoardComponent {
     ngOnInit() {
         this.initializeBoard();
         this.tracking.initBoard(this.height, this.width);
+        this.preloadFigure();
+    }
+
+    preloadFigure() {
+        this.populateSeed(Seed.Pulsar);
     }
 
     reset() {
@@ -46,7 +50,6 @@ export class BoardComponent {
         });
 
         this.tracking.initBoard(this.height, this.width);
-        // this.lifeRules.newGeneration = [];
     }
 
     populateSeed(seed: Seed) {
