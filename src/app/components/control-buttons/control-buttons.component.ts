@@ -33,10 +33,7 @@ export class ControlButtonsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.controlStates = new ControlStates()
-    .disablePlay()
-    .disableClear()
-    .disableStop();
+    this.controlStates = new ControlStates().disableStop();
   }
 
   onClickPlay() {

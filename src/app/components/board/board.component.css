@@ -20,19 +20,6 @@
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-.cell:hover {
-  background-color: #555;
-  transform: scale(1.05);
-}
-
-.cell.debug-mode {
-  font-size: 10px;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .cell.alive {
   background-color: #fbf165;
   border-color: #e5b800;
