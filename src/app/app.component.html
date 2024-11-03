@@ -3,6 +3,6 @@
     <app-board (controlStates)="controls.onControlStates($event)" #board></app-board>
   </div>
   <div class="controls-container">
-    <app-controls [board]="board" #controls></app-controls>
+    <app-controls [board]="board" #controls></app-controls> <!-- Pass board reference here -->
   </div>
 </div>

@@ -3,55 +3,64 @@ import { BoardComponent } from '../board/board.component';
 import { ControlStates } from './control-buttons-state.class';
 import { CommonModule } from '@angular/common';
 import { Seed } from '../../types/seed.enum';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectDisabledPlay, selectDisabledStop, selectDisabledClear, selectDisabledSeed } from '../../states/control-buttons/control-buttons.selector';
+import * as ControlActions from '../../states/control-buttons/control-buttons.actions';
 
 @Component({
   selector: 'app-controls',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule],  // Remove StoreModule here
   templateUrl: './control-buttons.component.html',
   styleUrls: ['./control-buttons.component.css']
 })
 export class ControlButtonsComponent implements OnInit {
-  @Input()
-  board!: BoardComponent;
+  @Input() board!: BoardComponent;
 
   public controlStates!: ControlStates;
   public initialSeeds: Seed[];
+  public disabledPlay$!: Observable<boolean>;
+  public disabledStop$!: Observable<boolean>;
+  public disabledClear$!: Observable<boolean>;
+  public disabledSeed$!: Observable<boolean>;
 
   private loopIntervalId!: ReturnType<typeof setInterval>;
 
-  constructor() {
+  constructor(private store: Store) {
     this.initialSeeds = [Seed.Blinker, Seed.Pulsar, Seed.Pentadecathlon, Seed.Glider, Seed.LWSS];
   }
 
   ngOnInit() {
-    this.controlStates = new ControlStates().disableStop();
+    this.disabledPlay$ = this.store.select(selectDisabledPlay);
+    this.disabledStop$ = this.store.select(selectDisabledStop);
+    this.disabledClear$ = this.store.select(selectDisabledClear);
+    this.disabledSeed$ = this.store.select(selectDisabledSeed);
+
+    this.store.dispatch(ControlActions.disableStop());
   }
 
   onClickPlay() {
     this.board.update();
-    let cs = new ControlStates().disablePlay().disableSeed();
-    this.controlStates = cs;
+    this.store.dispatch(ControlActions.disablePlay());
+    this.store.dispatch(ControlActions.disableSeed());
 
     this.loopIntervalId = window.setInterval.call(
       this,
       () => {
-        cs = new ControlStates().disablePlay().disableSeed();
         this.board.update();
-
-        this.controlStates = cs;
       },
       600
     );
   }
 
   onClickStop() {
-    this.controlStates = new ControlStates().disableStop();
+    this.store.dispatch(ControlActions.disableStop());
     clearInterval(this.loopIntervalId);
   }
 
   onClickClear() {
-    this.controlStates = new ControlStates().disablePlay().disableStop().disableClear();
+    this.store.dispatch(ControlActions.disableClear());
     clearInterval(this.loopIntervalId);
     this.board.reset();
   }
@@ -63,7 +72,7 @@ export class ControlButtonsComponent implements OnInit {
   onSelectChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     if (target) {
-      this.controlStates = new ControlStates().disableStop();
+      this.store.dispatch(ControlActions.disableStop());
       this.board.populateSeed(target.value as Seed);
     }
   }
