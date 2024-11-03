@@ -24,3 +24,7 @@
   background-color: #fbf165;
   border-color: #e5b800;
 }
+
+.cell.dead {
+  background-color: transparent;
+}

@@ -18,17 +18,15 @@ import { Seed } from '../../types/seed.enum';
 export class BoardComponent {
   @Output() controlStates = new EventEmitter<ControlStates>();
 
-  public cellsStyle: any[][] = [];
+  public cells: Cell[][] = [];
   public whichSeed: Cell[] = [];
 
   private width: number;
   private height: number;
-  private cellColor: string;
 
   constructor(private tracking: TrackingService, private lifeRules: LifeRulesService) {
     this.width = 40;
     this.height = 20;
-    this.cellColor = '#fbf165';
   }
 
   ngOnInit() {
@@ -42,9 +40,9 @@ export class BoardComponent {
   }
 
   reset() {
-    this.cellsStyle.forEach((column) => {
-      column.forEach((cell) => {
-        cell.backgroundColor = '';
+    this.cells.forEach((row) => {
+      row.forEach((cell) => {
+        cell.alive = false;
       });
     });
 
@@ -77,7 +75,7 @@ export class BoardComponent {
     }
 
     this.whichSeed.forEach((cell: Cell) => {
-      this.paintAt(cell);
+      this.cells[cell.row][cell.col].alive = true;
       this.tracking.mark(cell);
     });
   }
@@ -86,30 +84,19 @@ export class BoardComponent {
     this.lifeRules.applyRules();
 
     this.lifeRules.newGeneration.forEach((cell: Cell) => {
+      this.cells[cell.row][cell.col].alive = cell.alive;
       this.tracking.mark(cell);
-      if (cell.alive) {
-        this.paintAt(cell);
-      } else {
-        this.unPaintAt(cell);
-      }
     });
   }
 
-  private paintAt(c: Cell) {
-    this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
-  }
-
-  private unPaintAt(cell: Cell) {
-    this.cellsStyle[cell.row][cell.col].backgroundColor = '';
-  }
-
-  private initializeBoard(): void {
+  private initializeBoard() {
     for (let row = 0; row < this.height; row++) {
-      this.cellsStyle[row] = Array(this.width)
-        .fill({})
+      this.cells[row] = Array(this.width)
+        .fill(null)
         .map((_, col) => ({
-          'grid-row': row + 1,
-          'grid-column': col + 1
+          row,
+          col,
+          alive: false
         }));
     }
   }

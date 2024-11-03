@@ -18,7 +18,7 @@ export class ControlButtonsComponent implements OnInit {
   public controlStates!: ControlStates;
   public initialSeeds: Seed[];
 
-  private loopIntervalId!: any;
+  private loopIntervalId!: ReturnType<typeof setInterval>;
 
   constructor() {
     this.initialSeeds = [Seed.Blinker, Seed.Pulsar, Seed.Pentadecathlon, Seed.Glider, Seed.LWSS];
@@ -56,12 +56,15 @@ export class ControlButtonsComponent implements OnInit {
     this.board.reset();
   }
 
-  onControlStates($event: ControlStates) {
-    this.controlStates = $event;
+  onControlStates(event: ControlStates) {
+    this.controlStates = event;
   }
 
-  onSelectChange($event: any) {
-    this.controlStates = new ControlStates().disableStop();
-    this.board.populateSeed(<Seed>$event.target.value);
+  onSelectChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    if (target) {
+      this.controlStates = new ControlStates().disableStop();
+      this.board.populateSeed(target.value as Seed);
+    }
   }
 }
