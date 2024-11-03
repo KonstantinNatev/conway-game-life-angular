@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BoardComponent } from '../board/board.component';
-import { Seed } from '../../utils/seed';
 import { ControlStates } from './control-buttons-state.class';
 import { CommonModule } from '@angular/common';
+import { Seed } from '../../types/seed.enum';
 
 @Component({
   selector: 'app-controls',

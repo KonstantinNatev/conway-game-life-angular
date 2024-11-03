@@ -1,5 +1,4 @@
 export class ControlStates {
-
   disabledPlay: boolean;
   disabledStop: boolean;
   disabledClear: boolean;

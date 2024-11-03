@@ -1,36 +1,34 @@
 import { Injectable } from '@angular/core';
-import { CellInfo } from '../utils/cell-info.interface';
+import { Cell } from '../types/cell.interface';
 import { TrackingService } from './tracking.service';
+import { Coordinate } from '../types/lifeRules.interface';
 
 @Injectable()
 export class LifeRulesService {
+  public newGeneration!: Cell[];
 
-  newGeneration!: CellInfo[];
-
-  private neighbors: any[];
+  private neighbors: Coordinate[];
 
   constructor(private tracking: TrackingService) {
-  this.neighbors = [
-    {row: -1, col: -1}, // NW
-    {row: -1, col: 0},  // N
-    {row: -1, col: 1},  // NE
-    {row: 0, col: -1},  // W
-    {row: 0, col: 1},   // E
-    {row: 1, col: -1},  // SW
-    {row: 1, col: 0},   // S
-    {row: 1, col: 1}    // SE
-  ];
-}
+    this.neighbors = [
+        {row: -1, col: -1}, // NW
+        {row: -1, col: 0},  // N
+        {row: -1, col: 1},  // NE
+        {row: 0, col: -1},  // W
+        {row: 0, col: 1},   // E
+        {row: 1, col: -1},  // SW
+        {row: 1, col: 0},   // S
+        {row: 1, col: 1}    // SE
+      ];
+  }
 
-  useTrackingService(t: TrackingService) {
-    this.tracking = t;
+  useTrackingService(trackingService: TrackingService) {
+    this.tracking = trackingService;
   }
 
   applyRules() {
     this.newGeneration = [];
-    // matrix to track already checked dead cells; don't want to check again
     const checkedDeadCells = this.tracking.board!.map((someRow) => {
-      // slice clones the array row and the row in tracking.board will not be modified or referenced
       return someRow.slice().fill(false);
     });
 
@@ -42,8 +40,6 @@ export class LifeRulesService {
             if(aliveCell) {
                 let liveNeighbors = this.anyLiveNeighborsAt(currRow, currCol);
 
-                // Any live cell with fewer than two live neighbors dies, as if caused by under population.
-                // Any live cell with more than three live neighbors dies, as if by overpopulation.
                 if (liveNeighbors < 2 || liveNeighbors > 3) {
                     this.newGeneration.push({
                         row: currRow,
@@ -51,7 +47,6 @@ export class LifeRulesService {
                         alive: false
                     });
                 }  else {
-                // Any live cell with two or three live neighbors lives onto the next generation.
                 this.newGeneration.push({
                     row: currRow,
                     col: currCol,
@@ -65,7 +60,6 @@ export class LifeRulesService {
                        checkedDeadCells[deadNeighbor.row][deadNeighbor.col] = true;
                        liveNeighbors = this.anyLiveNeighborsAt(deadNeighbor.row, deadNeighbor.col);
     
-                       // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
                        if (liveNeighbors === 3) {
                          this.newGeneration.push({
                            row: deadNeighbor.row,
@@ -77,19 +71,14 @@ export class LifeRulesService {
                 });
               }
             }
-
-
-
         }
     }
-
-
   }
 
   private anyLiveNeighborsAt(row: number, col: number) {
     let liveNeighbors = 0;
 
-    this.checkNeighborsAt(row, col, (neighbor: CellInfo) => {
+    this.checkNeighborsAt(row, col, (neighbor: Cell) => {
       if (neighbor.alive) {
         liveNeighbors++;
       }
@@ -99,9 +88,9 @@ export class LifeRulesService {
   }
 
   private getDeadNeighborsAt(row: number, col: number) {
-    const deadNeighbors: { row: number; col: number; }[] = [];
+    const deadNeighbors: Coordinate[] = [];
 
-    this.checkNeighborsAt(row, col, (neighbor: CellInfo) => {
+    this.checkNeighborsAt(row, col, (neighbor: Cell) => {
       if (!neighbor.alive) {
         deadNeighbors.push({
           row: neighbor.row,
@@ -113,7 +102,7 @@ export class LifeRulesService {
     return deadNeighbors;
   }
 
-  private checkNeighborsAt(row: number, col: number, cell: (neighbor: CellInfo) => void) {
+  private checkNeighborsAt(row: number, col: number, cell: (neighbor: Cell) => void) {
     this.neighbors.forEach((neighborCoord) => {
       const neighborRow = row + neighborCoord.row;
       const neighborCol = col + neighborCoord.col;
@@ -131,5 +120,4 @@ export class LifeRulesService {
   private isWithinBorders(row: number, col: number) {
     return (row > -1 && row < this.tracking.totalRows!) && (col > -1 && col < this.tracking.totalCols!);
   }
-
 }

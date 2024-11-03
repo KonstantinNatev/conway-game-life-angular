@@ -2,9 +2,10 @@ import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Output } from "@angular/core";
 import { TrackingService } from "../../services/tracking.service";
 import { ControlStates } from "../control-buttons/control-buttons-state.class";
-import { InitSeed, Seed } from "../../utils/seed";
-import { CellInfo } from "../../utils/cell-info.interface";
+import { InitSeed } from "../../utils/seed";
+import { Cell } from "../../types/cell.interface";
 import { LifeRulesService } from "../../services/lifeRules.service";
+import { Seed } from "../../types/seed.enum";
 
 @Component ({
     selector: 'app-board',
@@ -16,11 +17,10 @@ import { LifeRulesService } from "../../services/lifeRules.service";
 })
 
 export class BoardComponent {
-    // Emits ControlStates events to notify the parent of control state changes.
     @Output() controlStates = new EventEmitter<ControlStates>();
 
     public cellsStyle: any[][] = [];
-    public whichSeed: CellInfo[] = [];
+    public whichSeed: Cell[] = [];
 
     private width: number;
     private height: number;
@@ -77,7 +77,7 @@ export class BoardComponent {
             break;
         }
         
-        this.whichSeed.forEach((cell: CellInfo) => {
+        this.whichSeed.forEach((cell: Cell) => {
             this.paintAt(cell);
             this.tracking.mark(cell);
         });
@@ -86,7 +86,7 @@ export class BoardComponent {
    update() {
         this.lifeRules.applyRules();
 
-        this.lifeRules.newGeneration.forEach((cell: CellInfo) => {
+        this.lifeRules.newGeneration.forEach((cell: Cell) => {
             this.tracking.mark(cell);
             if (cell.alive) {
                 this.paintAt(cell);
@@ -96,11 +96,11 @@ export class BoardComponent {
         });
    }
 
-    private paintAt(c: CellInfo) {
+    private paintAt(c: Cell) {
       this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
     }
 
-    private unPaintAt(cell: CellInfo) {
+    private unPaintAt(cell: Cell) {
         this.cellsStyle[cell.row][cell.col].backgroundColor = '';
     }
 
