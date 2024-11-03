@@ -1,23 +1,15 @@
-import { CellInfo } from "./cell-info.interface";
-
-export const enum Seed {
-  Blinker = 'Blinker',
-  Pulsar = 'Pulsar',
-  Pentadecathlon = 'Pentadecathlon',
-  Glider = 'Glider',
-  LWSS = 'LWSS'
-}
+import { Cell } from '../types/cell.interface';
 
 export class InitSeed {
-  static blinker(): CellInfo[] {
+  static blinker(): Cell[] {
     return [
-      {row: 10, col: 18, alive: true},
-      {row: 11, col: 18, alive: true},
-      {row: 12, col: 18, alive: true}
+      { row: 10, col: 18, alive: true },
+      { row: 11, col: 18, alive: true },
+      { row: 12, col: 18, alive: true }
     ];
   }
 
-  static pulsar(): CellInfo[] {
+  static pulsar(): Cell[] {
     return [
       { row: 2, col: 9, alive: true },
       { row: 2, col: 15, alive: true },
@@ -74,12 +66,11 @@ export class InitSeed {
       { row: 15, col: 9, alive: true },
       { row: 15, col: 15, alive: true },
       { row: 16, col: 9, alive: true },
-      { row: 16, col: 15, alive: true },
+      { row: 16, col: 15, alive: true }
     ];
   }
 
-
-  static pentadecathlon(): CellInfo[] {
+  static pentadecathlon(): Cell[] {
     return [
       { row: 3, col: 18, alive: true },
       { row: 3, col: 19, alive: true },
@@ -102,32 +93,31 @@ export class InitSeed {
       { row: 13, col: 19, alive: true },
       { row: 14, col: 18, alive: true },
       { row: 14, col: 19, alive: true },
-      { row: 14, col: 20, alive: true },
+      { row: 14, col: 20, alive: true }
     ];
   }
 
-
-  static glider(): CellInfo[] {
+  static glider(): Cell[] {
     return [
-      {row: 1, col: 3, alive: true},
-      {row: 2, col: 4, alive: true},
-      {row: 3, col: 2, alive: true},
-      {row: 3, col: 3, alive: true},
-      {row: 3, col: 4, alive: true},
+      { row: 1, col: 3, alive: true },
+      { row: 2, col: 4, alive: true },
+      { row: 3, col: 2, alive: true },
+      { row: 3, col: 3, alive: true },
+      { row: 3, col: 4, alive: true }
     ];
   }
 
-  static lwss(): CellInfo[] {
+  static lwss(): Cell[] {
     return [
-      {row: 10, col: 2, alive: true},
-      {row: 10, col: 5, alive: true},
-      {row: 11, col: 6, alive: true},
-      {row: 12, col: 2, alive: true},
-      {row: 12, col: 6, alive: true},
-      {row: 13, col: 3, alive: true},
-      {row: 13, col: 4, alive: true},
-      {row: 13, col: 5, alive: true},
-      {row: 13, col: 6, alive: true},
+      { row: 10, col: 2, alive: true },
+      { row: 10, col: 5, alive: true },
+      { row: 11, col: 6, alive: true },
+      { row: 12, col: 2, alive: true },
+      { row: 12, col: 6, alive: true },
+      { row: 13, col: 3, alive: true },
+      { row: 13, col: 4, alive: true },
+      { row: 13, col: 5, alive: true },
+      { row: 13, col: 6, alive: true }
     ];
   }
 }

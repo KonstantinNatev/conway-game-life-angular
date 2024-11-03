@@ -1,115 +1,103 @@
-import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Output } from "@angular/core";
-import { TrackingService } from "../../services/tracking.service";
-import { ControlStates } from "../control-buttons/control-buttons-state.class";
-import { InitSeed, Seed } from "../../utils/seed";
-import { CellInfo } from "../../utils/cell-info.interface";
-import { LifeRulesService } from "../../services/lifeRules.service";
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { TrackingService } from '../../services/tracking.service';
+import { ControlStates } from '../control-buttons/control-buttons-state.class';
+import { InitSeed } from '../../utils/seed';
+import { Cell } from '../../types/cell.interface';
+import { LifeRulesService } from '../../services/lifeRules.service';
+import { Seed } from '../../types/seed.enum';
 
-@Component ({
-    selector: 'app-board',
-    standalone: true,
-    imports: [CommonModule],
-    templateUrl: './board.component.html',
-    styleUrls: ['./board.component.css'],
-    providers: [TrackingService, LifeRulesService]
+@Component({
+  selector: 'app-board',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './board.component.html',
+  styleUrls: ['./board.component.css'],
+  providers: [TrackingService, LifeRulesService]
 })
-
 export class BoardComponent {
-    // Emits ControlStates events to notify the parent of control state changes.
-    @Output() controlStates = new EventEmitter<ControlStates>();
+  @Output() controlStates = new EventEmitter<ControlStates>();
 
-    public cellsStyle: any[][] = [];
-    public whichSeed: CellInfo[] = [];
+  public cells: Cell[][] = [];
+  public whichSeed: Cell[] = [];
 
-    private width: number;
-    private height: number;
-    private cellColor: string;
-    
-    constructor(private tracking: TrackingService, private lifeRules: LifeRulesService) {
-        this.width = 40;
-        this.height = 20;
-        this.cellColor = '#fbf165';
-    }
-    
-    ngOnInit() {
-        this.initializeBoard();
-        this.tracking.initBoard(this.height, this.width);
-        this.preloadFigure();
-    }
+  private width: number;
+  private height: number;
 
-    preloadFigure() {
-        this.populateSeed(Seed.Pulsar);
-    }
+  constructor(private tracking: TrackingService, private lifeRules: LifeRulesService) {
+    this.width = 40;
+    this.height = 20;
+  }
 
-    reset() {
-        this.cellsStyle.forEach((column) => {
-            column.forEach((cell) => {
-                cell.backgroundColor = "";
-            });
-        });
+  ngOnInit() {
+    this.initializeBoard();
+    this.tracking.initBoard(this.height, this.width);
+    this.preloadFigure();
+  }
 
-        this.tracking.initBoard(this.height, this.width);
-    }
+  preloadFigure() {
+    this.populateSeed(Seed.Pulsar);
+  }
 
-    populateSeed(seed: Seed) {
-        this.reset();
+  reset() {
+    this.cells.forEach((row) => {
+      row.forEach((cell) => {
+        cell.alive = false;
+      });
+    });
 
-        switch (seed) {
-            case Seed.Blinker:
-                this.whichSeed = InitSeed.blinker();
-            break;
+    this.tracking.initBoard(this.height, this.width);
+  }
 
-            case Seed.Pulsar:
-                this.whichSeed = InitSeed.pulsar();
-            break;
+  populateSeed(seed: Seed) {
+    this.reset();
 
-            case Seed.Pentadecathlon:
-                this.whichSeed = InitSeed.pentadecathlon();
-            break;
+    switch (seed) {
+      case Seed.Blinker:
+        this.whichSeed = InitSeed.blinker();
+        break;
 
-            case Seed.Glider:
-                this.whichSeed = InitSeed.glider();
-            break;
+      case Seed.Pulsar:
+        this.whichSeed = InitSeed.pulsar();
+        break;
 
-            case Seed.LWSS:
-                this.whichSeed = InitSeed.lwss();
-            break;
-        }
-        
-        this.whichSeed.forEach((cell: CellInfo) => {
-            this.paintAt(cell);
-            this.tracking.mark(cell);
-        });
-   }
+      case Seed.Pentadecathlon:
+        this.whichSeed = InitSeed.pentadecathlon();
+        break;
 
-   update() {
-        this.lifeRules.applyRules();
+      case Seed.Glider:
+        this.whichSeed = InitSeed.glider();
+        break;
 
-        this.lifeRules.newGeneration.forEach((cell: CellInfo) => {
-            this.tracking.mark(cell);
-            if (cell.alive) {
-                this.paintAt(cell);
-            } else {
-                this.unPaintAt(cell);
-            }
-        });
-   }
-
-    private paintAt(c: CellInfo) {
-      this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
+      case Seed.LWSS:
+        this.whichSeed = InitSeed.lwss();
+        break;
     }
 
-    private unPaintAt(cell: CellInfo) {
-        this.cellsStyle[cell.row][cell.col].backgroundColor = '';
-    }
+    this.whichSeed.forEach((cell: Cell) => {
+      this.cells[cell.row][cell.col].alive = true;
+      this.tracking.mark(cell);
+    });
+  }
 
-    private initializeBoard(): void {
-        for (let row = 0; row < this.height; row++) {
-            this.cellsStyle[row] = Array(this.width).fill({}).map((_, col) => ({
-                'grid-row': row + 1,
-                'grid-column': col + 1
-            }));
-        }
+  update() {
+    this.lifeRules.applyRules();
+
+    this.lifeRules.newGeneration.forEach((cell: Cell) => {
+      this.cells[cell.row][cell.col].alive = cell.alive;
+      this.tracking.mark(cell);
+    });
+  }
+
+  private initializeBoard() {
+    for (let row = 0; row < this.height; row++) {
+      this.cells[row] = Array(this.width)
+        .fill(null)
+        .map((_, col) => ({
+          row,
+          col,
+          alive: false
+        }));
     }
+  }
 }

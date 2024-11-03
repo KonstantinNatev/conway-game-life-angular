@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CellInfo } from "../utils/cell-info.interface";
+import { Cell } from '../types/cell.interface';
 
-// The @Injectable() decorator makes this service available for dependency injection 
-// It can be injected into components, services or directives
-@Injectable() 
+@Injectable()
 export class TrackingService {
-  totalRows: number | undefined;
-  totalCols: number | undefined;
-  board: boolean[][] | undefined;
+  public totalRows!: number;
+  public totalCols!: number;
+  public board!: boolean[][];
 
   initBoard(rows: number, cols: number) {
     this.totalRows = rows;
@@ -22,7 +20,7 @@ export class TrackingService {
     }
   }
 
-  mark(cell: CellInfo) {
+  mark(cell: Cell) {
     this.board![cell.row][cell.col] = cell.alive;
   }
 
@@ -30,14 +28,13 @@ export class TrackingService {
     let countLivesCell = 0;
 
     this.board!.forEach((row: boolean[]) => {
-        row.forEach((live: boolean) => {
-            if (live) {
-                countLivesCell++;
-            }
-        });
+      row.forEach((live: boolean) => {
+        if (live) {
+          countLivesCell++;
+        }
+      });
     });
 
     return countLivesCell === 0;
   }
-
 }
