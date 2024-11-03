@@ -1,8 +1,8 @@
 <div class="root">
-    <div class="board-container">
-      <app-board (controlStates)="controls.onControlStates($event)" #board></app-board>
-    </div>
-    <div class="controls-container">
-      <app-controls [board]="board" #controls></app-controls>
-    </div>
+  <div class="board-container">
+    <app-board (controlStates)="controls.onControlStates($event)" #board></app-board>
+  </div>
+  <div class="controls-container">
+    <app-controls [board]="board" #controls></app-controls>
+  </div>
 </div>

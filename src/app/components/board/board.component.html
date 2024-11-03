@@ -1,12 +1,7 @@
 <div class="board-container">
   <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
-      <div
-        class="cell"
-        [ngStyle]="cellStyle"
-        [ngClass]="{'alive': cellStyle.alive}"
-      >
-      </div>
-    </ng-container> 
+      <div class="cell" [ngStyle]="cellStyle" [ngClass]="{ alive: cellStyle.alive }"></div>
+    </ng-container>
   </ng-container>
 </div>

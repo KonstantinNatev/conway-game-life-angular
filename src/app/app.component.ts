@@ -5,7 +5,7 @@ import { ControlButtonsComponent } from './components/control-buttons/control-bu
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [BoardComponent, ControlButtonsComponent], 
+  imports: [BoardComponent, ControlButtonsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

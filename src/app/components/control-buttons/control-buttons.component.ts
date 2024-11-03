@@ -9,11 +9,9 @@ import { Seed } from '../../types/seed.enum';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './control-buttons.component.html',
-  styleUrls: ['./control-buttons.component.css'],
+  styleUrls: ['./control-buttons.component.css']
 })
-
 export class ControlButtonsComponent implements OnInit {
-
   @Input()
   board!: BoardComponent;
 
@@ -23,13 +21,7 @@ export class ControlButtonsComponent implements OnInit {
   private loopIntervalId!: any;
 
   constructor() {
-    this.initialSeeds = [
-      Seed.Blinker,
-      Seed.Pulsar,
-      Seed.Pentadecathlon,
-      Seed.Glider,
-      Seed.LWSS
-    ];
+    this.initialSeeds = [Seed.Blinker, Seed.Pulsar, Seed.Pentadecathlon, Seed.Glider, Seed.LWSS];
   }
 
   ngOnInit() {
@@ -41,13 +33,16 @@ export class ControlButtonsComponent implements OnInit {
     let cs = new ControlStates().disablePlay().disableSeed();
     this.controlStates = cs;
 
-    this.loopIntervalId = window.setInterval.call(this,
+    this.loopIntervalId = window.setInterval.call(
+      this,
       () => {
         cs = new ControlStates().disablePlay().disableSeed();
-          this.board.update();
+        this.board.update();
 
         this.controlStates = cs;
-      }, 600);
+      },
+      600
+    );
   }
 
   onClickStop() {
@@ -56,10 +51,7 @@ export class ControlButtonsComponent implements OnInit {
   }
 
   onClickClear() {
-    this.controlStates = new ControlStates()
-    .disablePlay()
-    .disableStop()
-    .disableClear()
+    this.controlStates = new ControlStates().disablePlay().disableStop().disableClear();
     clearInterval(this.loopIntervalId);
     this.board.reset();
   }

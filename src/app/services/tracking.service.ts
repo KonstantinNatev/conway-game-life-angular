@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Cell } from "../types/cell.interface";
+import { Cell } from '../types/cell.interface';
 
-@Injectable() 
+@Injectable()
 export class TrackingService {
   public totalRows!: number;
   public totalCols!: number;
@@ -28,11 +28,11 @@ export class TrackingService {
     let countLivesCell = 0;
 
     this.board!.forEach((row: boolean[]) => {
-        row.forEach((live: boolean) => {
-            if (live) {
-                countLivesCell++;
-            }
-        });
+      row.forEach((live: boolean) => {
+        if (live) {
+          countLivesCell++;
+        }
+      });
     });
 
     return countLivesCell === 0;

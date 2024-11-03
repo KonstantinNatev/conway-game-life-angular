@@ -20,7 +20,7 @@ button {
 }
 
 button:hover:not([disabled]) {
-  background-color: #357ABD;
+  background-color: #357abd;
   transform: scale(1.05);
 }
 

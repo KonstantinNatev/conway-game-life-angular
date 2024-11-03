@@ -11,15 +11,15 @@ export class LifeRulesService {
 
   constructor(private tracking: TrackingService) {
     this.neighbors = [
-        {row: -1, col: -1}, // NW
-        {row: -1, col: 0},  // N
-        {row: -1, col: 1},  // NE
-        {row: 0, col: -1},  // W
-        {row: 0, col: 1},   // E
-        {row: 1, col: -1},  // SW
-        {row: 1, col: 0},   // S
-        {row: 1, col: 1}    // SE
-      ];
+      { row: -1, col: -1 }, // NW
+      { row: -1, col: 0 }, // N
+      { row: -1, col: 1 }, // NE
+      { row: 0, col: -1 }, // W
+      { row: 0, col: 1 }, // E
+      { row: 1, col: -1 }, // SW
+      { row: 1, col: 0 }, // S
+      { row: 1, col: 1 } // SE
+    ];
   }
 
   useTrackingService(trackingService: TrackingService) {
@@ -32,46 +32,45 @@ export class LifeRulesService {
       return someRow.slice().fill(false);
     });
 
-    for(let currRow = 0; currRow < this.tracking.totalRows!; currRow++) {
-        for(let currCol = 0; currCol < this.tracking.totalCols!; currCol++) {
-          
-            const aliveCell = this.tracking.board![currRow][currCol];
+    for (let currRow = 0; currRow < this.tracking.totalRows!; currRow++) {
+      for (let currCol = 0; currCol < this.tracking.totalCols!; currCol++) {
+        const aliveCell = this.tracking.board![currRow][currCol];
 
-            if(aliveCell) {
-                let liveNeighbors = this.anyLiveNeighborsAt(currRow, currCol);
+        if (aliveCell) {
+          let liveNeighbors = this.anyLiveNeighborsAt(currRow, currCol);
 
-                if (liveNeighbors < 2 || liveNeighbors > 3) {
-                    this.newGeneration.push({
-                        row: currRow,
-                        col: currCol,
-                        alive: false
-                    });
-                }  else {
-                this.newGeneration.push({
-                    row: currRow,
-                    col: currCol,
+          if (liveNeighbors < 2 || liveNeighbors > 3) {
+            this.newGeneration.push({
+              row: currRow,
+              col: currCol,
+              alive: false
+            });
+          } else {
+            this.newGeneration.push({
+              row: currRow,
+              col: currCol,
+              alive: true
+            });
+
+            this.getDeadNeighborsAt(currRow, currCol).forEach((deadNeighbor) => {
+              const cellIsChecked = checkedDeadCells[deadNeighbor.row][deadNeighbor.col];
+
+              if (!cellIsChecked) {
+                checkedDeadCells[deadNeighbor.row][deadNeighbor.col] = true;
+                liveNeighbors = this.anyLiveNeighborsAt(deadNeighbor.row, deadNeighbor.col);
+
+                if (liveNeighbors === 3) {
+                  this.newGeneration.push({
+                    row: deadNeighbor.row,
+                    col: deadNeighbor.col,
                     alive: true
-                });
-
-                this.getDeadNeighborsAt(currRow, currCol).forEach((deadNeighbor) => {
-                   const cellIsChecked = checkedDeadCells[deadNeighbor.row][deadNeighbor.col];
-    
-                    if (!cellIsChecked) {
-                       checkedDeadCells[deadNeighbor.row][deadNeighbor.col] = true;
-                       liveNeighbors = this.anyLiveNeighborsAt(deadNeighbor.row, deadNeighbor.col);
-    
-                       if (liveNeighbors === 3) {
-                         this.newGeneration.push({
-                           row: deadNeighbor.row,
-                           col: deadNeighbor.col,
-                           alive: true
-                         });
-                       }
-                    }
-                });
+                  });
+                }
               }
-            }
+            });
+          }
         }
+      }
     }
   }
 
@@ -94,7 +93,7 @@ export class LifeRulesService {
       if (!neighbor.alive) {
         deadNeighbors.push({
           row: neighbor.row,
-          col: neighbor.col,
+          col: neighbor.col
         });
       }
     });
@@ -118,6 +117,6 @@ export class LifeRulesService {
   }
 
   private isWithinBorders(row: number, col: number) {
-    return (row > -1 && row < this.tracking.totalRows!) && (col > -1 && col < this.tracking.totalCols!);
+    return row > -1 && row < this.tracking.totalRows! && col > -1 && col < this.tracking.totalCols!;
   }
 }
